@@ -38,7 +38,13 @@ export default {
             method: 'post',
             data: eduTeacher  //转化json传递
           }) 
+    },
+
+    // 获取所有讲师
+    getAllTeacher() {
+        return request({
+            url:`/eduservice/eduteacher`,
+            method:'get'
+        })
     }
-
-
 }
