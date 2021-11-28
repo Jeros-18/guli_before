@@ -64,7 +64,19 @@
         <el-input v-model="courseInfo.description" />
       </el-form-item>
 
-      <!-- 课程封面 TODO -->
+      <!-- 课程封面-->
+      <el-form-item label="课程封面">
+        <el-upload
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          :action="BASE_API+'/eduoss/fileoss/uploadFile'"
+          class="avatar-uploader"
+        >
+          <img :src="courseInfo.cover">
+        </el-upload>
+      </el-form-item>
+
 
       <el-form-item label="课程价格">
         <el-input-number
@@ -91,11 +103,13 @@ export default {
     return {
       saveBtnDisabled: false, //保存按钮是否禁用
       courseInfo: {
-          subjectId:''
+          subjectId:'',
+          cover:'/static/pink.jpg'
       }, //课程基本信息,
       teacherList:[], //讲师下拉选择框
       oneSubjectList:[], // 一级分类
       twoSubjectList:[], // 二级分类
+      BASE_API: process.env.BASE_API // 接口API地址
     };
   },
   created() {
@@ -140,6 +154,25 @@ export default {
         }
 
     },
+
+    //上传成功后方法
+    handleAvatarSuccess(res, file) {
+      this.courseInfo.cover = res.data.url;
+    },
+    //校验课程封面
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    }
+
 
   }
 };
