@@ -92,14 +92,14 @@ export const constantRouterMap = [
     path: '/subject',
     component: Layout,
     redirect: '/subject/table',
-    name: '课程管理',
-    meta: { title: '课程管理', icon: 'example' },
+    name: '课程分类管理',
+    meta: { title: '课程分类管理', icon: 'example' },
     children: [
       {
         path: 'add',
-        name: '添加课程',
+        name: '添加课程分类',
         component: () => import('@/views/subject/add'),
-        meta: { title: '添加课程', icon: 'table' }
+        meta: { title: '添加课程分类', icon: 'table' }
       },
       {
         path: 'list',
