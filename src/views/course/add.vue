@@ -107,10 +107,12 @@ export default {
     },
   data() {
     return {
+      courseId:'',
       saveBtnDisabled: false, //保存按钮是否禁用
       courseInfo: {
           subjectId:'',
-          cover:'/static/pink.jpg'
+          cover:'/static/pink.jpg',
+          subjectParentId:''
       }, //课程基本信息,
       teacherList:[], //讲师下拉选择框
       oneSubjectList:[], // 一级分类
@@ -119,11 +121,34 @@ export default {
     };
   },
   created() {
-      this.getTeacherList();
+     if (this.$route.params && this.$route.params.id) {
+      this.courseId = this.$route.params.id;
+      this.getCourseInfoByCourseId();
+    } else {
       this.getAllSubjectInfo();
-      this.getTwoByOneId()
+    }
+    this.getTeacherList();
   },
+
   methods: {
+    //数据回显初始化方法
+    getCourseInfoByCourseId() {
+      course.getCourseInfoById(this.courseId).then(response => {
+        this.courseInfo = response.data.courseInfo1;
+        //初始化一级分类
+        subject.getAllSubject().then(response => {
+          this.oneSubjectList = response.data.allSubject;
+          //初始化二级分类
+          for (let i = 0; i < this.oneSubjectList.length; i++) {
+            let oneSubject = this.oneSubjectList[i];
+            if (oneSubject.id === this.courseInfo.subjectParentId) {
+              this.twoSubjectList = oneSubject.children;
+            }
+          }
+        });
+      });
+    },
+
     next() {
       course.addCourseInfo(this.courseInfo).then(response => {
         this.$message({
@@ -131,7 +156,8 @@ export default {
           message: "添加成功!"
         });
         //this.$router.push({ path: '/edu/course/chapter/1' })
-
+        this.courseId=response.courseId
+        this.$router.push({path:`/course/chapter/${this.courseId}`})
       });
     },
 

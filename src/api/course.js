@@ -10,7 +10,13 @@ export default {
         })
     },
 
-
+    // 根据Id查询课程信息
+    getCourseInfoById(id){
+        return request({
+            url: `/eduservice/educourse/getCourseInfoById/${id}`,
+            method: 'get'
+        })
+    }
 
 
 }
