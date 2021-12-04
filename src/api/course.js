@@ -24,7 +24,24 @@ export default {
             method: 'post',
             data:courseInfo
           })
+    },
+
+     //根据课程id查询课程发布信息
+     getCoursePublishById(id){
+        return request({
+            url: `/eduservice/educourse/getCoursePublishById/${id}`,
+            method: 'get'
+          })
+    },
+
+    //根据id发布课程
+    publishCourse(id){
+        return request({
+            url: `/eduservice/educourse/publishCourse/${id}`,
+            method: 'put'
+          })
     }
+
 
 
 
