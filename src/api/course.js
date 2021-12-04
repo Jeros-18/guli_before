@@ -16,7 +16,16 @@ export default {
             url: `/eduservice/educourse/getCourseInfoById/${id}`,
             method: 'get'
         })
+    },
+    //修改课程信息
+    updateCourseInfo(courseInfo){
+        return request({
+            url: `/eduservice/educourse/updateCourseInfo`,
+            method: 'post',
+            data:courseInfo
+          })
     }
+
 
 
 }

@@ -111,8 +111,7 @@ export default {
       saveBtnDisabled: false, //保存按钮是否禁用
       courseInfo: {
           subjectId:'',
-          cover:'/static/pink.jpg',
-          subjectParentId:''
+          cover:'/static/pink.jpg'
       }, //课程基本信息,
       teacherList:[], //讲师下拉选择框
       oneSubjectList:[], // 一级分类
@@ -150,6 +149,17 @@ export default {
     },
 
     next() {
+      if(this.courseInfo.id){
+        //修改
+        this.updateCourse()
+      }else{
+        // 添加
+        this.saveCourseInfo()
+      }
+    },
+
+// 添加
+    saveCourseInfo(){
       course.addCourseInfo(this.courseInfo).then(response => {
         this.$message({
           type: "success",
@@ -160,6 +170,20 @@ export default {
         this.$router.push({path:`/course/chapter/${this.courseId}`})
       });
     },
+
+    // 修改
+    updateCourse(){
+      course.updateCourseInfo(this.courseInfo).then(response=>{
+        this.$message({
+          type:"success",
+          message:"修改成功"
+        });
+        this.$router.push({
+          path:`/course/chapter/${this.courseId}`
+        })
+      })
+    },
+
 
     //讲师初始化
     getTeacherList(){
